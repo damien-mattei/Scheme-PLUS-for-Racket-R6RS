@@ -23,6 +23,9 @@
 ;; if : parsed-args=.#<syntax:if-parser.sls:117:41 (cond (#t 7))>
 ;; 7
 
+;; > (if #t then 1 2 else 3 4)
+;; if : parsed-args=.#<syntax:/home/mattei/git/Scheme-PLUS-for-Racket-R6RS/if-parser.sls:180:21 (cond (#t (let () 1 2)) (else...>
+;; 2
 
 (library (if-then-else) ; R6RS
 
