@@ -31,10 +31,13 @@
   (import ;;(rnrs base (6))
    (except (rnrs base (6)) if)
    
-	  (rnrs syntax-case (6))
-	  ;;(only (racket) syntax-case)
-	  (for (rnrs base (6)) expand) ; import at expand phase (not run phase)
-	  
+   ;;(rnrs syntax-case (6))
+
+   ;;(only (racket) syntax-case)
+
+   ;;(for (rnrs base (6)) expand) ; import at expand phase (not run phase)
+   (for ;;(except (rnrs base (6)) if) expand)
+    (rename (rnrs base (6)) (if if-scheme)) expand)
 	  (for (rnrs syntax-case (6)) expand)
 	  (only (srfi :1) third)
 	  (Scheme+ declare)
