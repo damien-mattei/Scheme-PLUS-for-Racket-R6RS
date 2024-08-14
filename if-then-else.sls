@@ -17,11 +17,11 @@
 
 #!r6rs
 
-
-;; /Applications/Racket\ v8.13/bin/plt-r6rs --install if-then-else.scm
-;; [installing /Users/mattei/Library/Racket/8.13/collects/if-then-else/main.ss]
-;; [Compiling /Users/mattei/Library/Racket/8.13/collects/if-then-else/main.ss]
-
+;; Welcome to DrRacket, version 8.13 [cs].
+;; Language: r6rs, with debugging; memory limit: 128 MB.
+;; > (if #t then 7)
+;; if : parsed-args=.#<syntax:if-parser.sls:117:41 (cond (#t 7))>
+;; 7
 
 
 (library (if-then-else) ; R6RS
