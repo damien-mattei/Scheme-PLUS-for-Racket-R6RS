@@ -30,7 +30,7 @@
   (import (rnrs base (6))
 	  (for (rnrs base (6)) expand) ; import at expand phase (not run phase)
 	  (for (rnrs syntax-case (6)) expand)
-	  (for (n-arity) expand) ; at phase: 1; the transformer environment
+	  (for (Scheme+ n-arity) expand) ; at phase: 1; the transformer environment
 	  (for (Scheme+ infix-with-precedence-to-prefix) expand) ; at phase: 1; the transformer environment
 	  (for (Scheme+ operators-list) expand);; at phase: 1; the transformer environment
 	  (for (only (rnrs io simple (6)) display newline) expand)
