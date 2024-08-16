@@ -35,35 +35,37 @@
 (library (overload)
 
 
-  (export $ovrld-ht$
-	 
-	 define-overload-procedure
-	 overload-procedure
-	 
-	 define-overload-existing-procedure
-	 overload-existing-procedure
-	 
-	 define-overload-operator
-	 overload-operator
-	 
-	 define-overload-existing-operator
-	 overload-existing-operator
-	 
-	 define-overload-n-arity-operator
-	 overload-n-arity-operator
-	 
-	 define-overload-existing-n-arity-operator
-	 overload-existing-n-arity-operator
+  (export
 
+   $ovrld-ht$
+   
+   define-overload-procedure
+   overload-procedure
+   
+   define-overload-existing-procedure
+   overload-existing-procedure
+   
+   define-overload-operator
+   overload-operator
+   
+   define-overload-existing-operator
+   overload-existing-operator
+   
+   define-overload-n-arity-operator
+   overload-n-arity-operator
+   
+   define-overload-existing-n-arity-operator
+   overload-existing-n-arity-operator
+
+   
+   ;;$ovrld-square-brackets-lst$
+   
+   overload-square-brackets
+   ;;find-getter-and-setter-for-overloaded-square-brackets
+   find-getter-for-overloaded-square-brackets
+   find-setter-for-overloaded-square-brackets
 	 
-	 ;;$ovrld-square-brackets-lst$
-	 
-	 overload-square-brackets
-	 ;;find-getter-and-setter-for-overloaded-square-brackets
-	 find-getter-for-overloaded-square-brackets
-	 find-setter-for-overloaded-square-brackets
-	 
-	 ) ; end export
+   ) ; end export
 
   (import (rnrs base (6))
 
