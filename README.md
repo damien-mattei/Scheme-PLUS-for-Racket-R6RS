@@ -11,4 +11,4 @@ Designed to use with [SRFI 105 Curly Infix reader for Racket](https://github.com
 
 ![Scheme+ schema](schema-scheme+.jpg "Scheme+ schema")
 
-["See general documentation of Scheme+"](https://github.com/damien-mattei/Scheme-PLUS-for-Racket/blob/gh-pages/README.md)
+[See general documentation of Scheme+](https://github.com/damien-mattei/Scheme-PLUS-for-Racket/blob/gh-pages/README.md)
