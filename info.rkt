@@ -9,7 +9,7 @@
 (define pkg-authors '(mattei))
 (define scribblings '(("scribblings/Scheme-PLUS-for-Racket-R6RS.scrbl" ())))
 (define build-deps '("scribble-lib" "racket-doc" "scribble-code-examples" "scribble-doc"))
-(define license 'GPL-3.0-or-later)
+(define license 'LGPL-3.0-or-later)
 
 (define deps
   '("base"
