@@ -1,4 +1,4 @@
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2024 Damien MATTEI
 
@@ -35,15 +35,15 @@
    (rnrs base (6))
    (only (rnrs control (6)) when)
    ;;(only (racket) require)
-   (Scheme+ def)
-   (Scheme+ declare)
-   (Scheme+ block)
-   (Scheme+ syntax)
-   (Scheme+ slice)
-   (Scheme+ infix-with-precedence-to-prefix)
-   (Scheme+ infix)
-   (Scheme+ operators)
-   (Scheme+ operators-list))
+   (Scheme+R6RS def)
+   (Scheme+R6RS declare)
+   (Scheme+R6RS block)
+   (Scheme+R6RS syntax)
+   (Scheme+R6RS slice)
+   (Scheme+R6RS infix-with-precedence-to-prefix)
+   (Scheme+R6RS infix)
+   (Scheme+R6RS operators)
+   (Scheme+R6RS operators-list))
 	  
 
  ;; (require def) ;;"def.scm")

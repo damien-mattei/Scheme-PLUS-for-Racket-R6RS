@@ -1,4 +1,4 @@
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2024 Damien MATTEI
 
@@ -30,9 +30,9 @@
   (import (rnrs base (6))
 	  (for (rnrs base (6)) expand) ; import at expand phase (not run phase)
 	  (for (rnrs syntax-case (6)) expand)
-	  (for (Scheme+ n-arity) expand) ; at phase: 1; the transformer environment
-	  (for (Scheme+ infix-with-precedence-to-prefix) expand) ; at phase: 1; the transformer environment
-	  (for (Scheme+ operators-list) expand);; at phase: 1; the transformer environment
+	  (for (Scheme+R6RS n-arity) expand) ; at phase: 1; the transformer environment
+	  (for (Scheme+R6RS infix-with-precedence-to-prefix) expand) ; at phase: 1; the transformer environment
+	  (for (Scheme+R6RS operators-list) expand);; at phase: 1; the transformer environment
 	  (for (only (rnrs io simple (6)) display newline) expand)
 	  )
 

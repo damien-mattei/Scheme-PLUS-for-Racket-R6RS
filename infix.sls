@@ -1,7 +1,7 @@
 ;; check that expression is infix
 
 
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2024 Damien MATTEI
 
@@ -30,7 +30,7 @@
   (export infix?)
 
   (import (rnrs base (6))
-	  (Scheme+ syntax))
+	  (Scheme+R6RS syntax))
 
   
 

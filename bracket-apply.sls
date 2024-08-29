@@ -1,7 +1,7 @@
 
 ;; for Racket
 
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2021-2024 Damien MATTEI
 
@@ -44,17 +44,17 @@
 	  (rename (flomat) (repeat repeat-flomat)
 		           (shape shape-flomat)
 			   (transpose transpose-flomat))
-	  (for (Scheme+ parse-square-brackets) expand) ; import at expand phase (not run phase)
+	  (for (Scheme+R6RS parse-square-brackets) expand) ; import at expand phase (not run phase)
 	  (for (only (rnrs io simple (6)) display newline) expand)
-	  (Scheme+ for_next_step)
-	  (Scheme+ array)
-	  (Scheme+ slice)
-	  (Scheme+ overload)
-	  (Scheme+ block))
+	  (Scheme+R6RS for_next_step)
+	  (Scheme+R6RS array)
+	  (Scheme+R6RS slice)
+	  (Scheme+R6RS overload)
+	  (Scheme+R6RS block))
 
   
 ;; SRFI 105 : Curly-infix-expressions in conjunction with specialized $bracket-apply$
-;; of Scheme+ allows a syntax like {Container[index]} with vectors
+;; of Scheme+R6RS allows a syntax like {Container[index]} with vectors
 ;; and arrays of any dimensions,size and shape and hash tables
 
 ;; (define T (make-vector 5))
@@ -956,51 +956,5 @@
       (function-array-n-dim-ref container (reverse args)) 
       (array-ref container (list->vector args))))   ;; array SRFI 25
 
-
-
-;; TODO :this code is only here to use Scheme+ but it should be in other place (scheme-infix.rkt)
-;; split the expression using slice as separator
-;; (def (parse-square-brackets-arguments args-brackets)
-
-;;   ;;(display "apply-square-brackets.* : parse-square-brackets-arguments : args-brackets=") (display args-brackets) (newline)
-
-;;   (when (null? args-brackets)
-;; 	(return args-brackets))
-
-;;   ;; closure including pbsa, result and partial-result are lists
-;;   (declare result partial-result)
-  
-;;   (def (psba args) ;; parse square brackets arguments
-
-;;        ;;(display "psba : args=") (display args) (newline)
-;;        ;;(display "psba : partial-result =") (display partial-result) (newline)
-;;        (when (null? args)
-;; 	     ;;(display "before !*prec") (newline)
-;; 	     (<- result (append result (!*prec partial-result))) ;; !*prec is defined in scheme-infix.rkt
-;; 	     ;;(display "after !*prec") (newline)
-;; 	     ;;(display result) (newline)
-;; 	     ;;(display "return-rec") (newline)
-;; 	     (return-rec result)) ;; return from all recursive calls
-       
-;;        (<+ fst  (car args))
-       
-;;        (if (equal? slice fst)
-	   
-;; 	   ($>
-;; 	    (when (not (null? partial-result))
-;; 		  (<- result (append result (!*prec partial-result))) ;; evaluate and store the expression
-;; 		  (<- partial-result  '())) ;; empty for the next possible portion between slice operator
-;; 	    (<- result  (append result (list fst)))) ;; append the slice operator
-	   
-;; 	   (<- partial-result (append partial-result (list fst)))) ;; not a slice operator but append it
-       
-;;        (psba (cdr args))) ;; end def, recurse
-
-
-  
-;;   (<+ rs  (psba args-brackets))   ;; initial call
-;;   ;;(display "parse-square-brackets-arguments : rs=") (display rs) (newline)
-;;   rs
-;;   )
 
 ) ; end library

@@ -1,4 +1,4 @@
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2024 Damien MATTEI
 
@@ -43,10 +43,10 @@
     (rename (rnrs base (6)) (if if-scheme)) expand)
 	  (for (rnrs syntax-case (6)) expand)
 	  (only (srfi :1) third)
-	  (Scheme+ declare)
-	  (Scheme+ insert)
-	  (Scheme+ syntax)
-	  (for (Scheme+ if-parser) expand)
+	  (Scheme+R6RS declare)
+	  (Scheme+R6RS insert)
+	  (Scheme+R6RS syntax)
+	  (for (Scheme+R6RS if-parser) expand)
 	  (for (only (rnrs io simple (6)) display newline) expand))
 
 

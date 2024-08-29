@@ -1,4 +1,4 @@
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2024 Damien MATTEI
 
@@ -37,9 +37,9 @@
 	  
 	  (rnrs syntax-case (6))
 	  (only (srfi :1) third)
-	  (Scheme+ declare)
-	  (Scheme+ insert)
-	  (Scheme+ syntax))
+	  (Scheme+R6RS declare)
+	  (Scheme+R6RS insert)
+	  (Scheme+R6RS syntax))
 
 ;; usefull procedures and macro for the next part of code
 (define (then=? arg)

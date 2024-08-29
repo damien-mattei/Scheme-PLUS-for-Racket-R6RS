@@ -1,4 +1,4 @@
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2024 Damien MATTEI
 
@@ -30,7 +30,7 @@
   
   (import (rnrs base (6))
 	  (only (rnrs control (6)) when)
-	  (Scheme+ for_next_step))
+	  (Scheme+R6RS for_next_step))
 
   
 

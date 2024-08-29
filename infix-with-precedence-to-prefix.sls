@@ -1,6 +1,6 @@
 ;; infix with precedence to prefix
 
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2024 Damien MATTEI
 
@@ -35,7 +35,7 @@
 	  (only (srfi :1) memq)
 	  ;;(operators-list)
 	  (only (racket) syntax)
-	  (Scheme+ syntax))
+	  (Scheme+R6RS syntax))
 	  
   
 

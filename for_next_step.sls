@@ -34,7 +34,7 @@
   (import (rnrs base (6))
 	  (for (rnrs base (6)) expand) ; import at expand phase (not run phase)
 	  (for (rnrs syntax-case (6)) expand)
-	  (Scheme+ increment))
+	  (Scheme+R6RS increment))
 
 
 ;;(require (rename-in racket/base [for for-rack])) ;; backup original Racket 'for'

@@ -31,14 +31,14 @@
   (import (rnrs base (6)))
 
 ;; this version can set values for arrays,hash tables,etc
-;; it uses the Scheme+ assignment operator: <-
+;; it uses the Scheme+R6RS assignment operator: <-
 (define-syntax set!-values-plus
   (syntax-rules ()
     ((_ (var var* ...) exp)
      (call-with-values
        (lambda () exp)
        (lambda (value . rest)
-         (<- var value) ;; instead of set! i use the Scheme+ assignment operator
+         (<- var value) ;; instead of set! i use the Scheme+R6RS assignment operator
          (set!-values-plus (var* ...) (apply values rest)))))
     ((_ () exp)
      (call-with-values

@@ -21,7 +21,7 @@
 
 ;; syntax defined in this file are inspired from Pascal language, C , Java,Javascript
 
-;; scheme@(guile-user)> (use-modules (Scheme+))
+;; scheme@(guile-user)> (use-modules (Scheme+R6RS))
 ;; scheme@(guile-user)> (define i 0)
 ;; scheme@(guile-user)> (define do '())
 ;; scheme@(guile-user)> (while {i < 4}
@@ -77,7 +77,7 @@
 ;; $3 = 1257
 
 
-;; 'do is redefined here only to allow 'define in body as allowed in Scheme+
+;; 'do is redefined here only to allow 'define in body as allowed in Scheme+R6RS
 ;; (define-syntax do
 
 ;;   (syntax-rules ()

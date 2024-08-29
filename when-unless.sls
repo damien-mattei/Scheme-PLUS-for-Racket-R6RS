@@ -13,7 +13,7 @@
 
 
 
-;; definitions redefined here only to allow 'define in body as allowed in Scheme+
+;; definitions redefined here only to allow 'define in body as allowed in Scheme+R6RS
 
 ;; implémenté de base en Racket
 ;; (define-syntax when

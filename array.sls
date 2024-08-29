@@ -56,8 +56,8 @@
 	(import
 	 (rnrs base (6))
 	 (srfi :25)
-	 (Scheme+ increment)
-	 (Scheme+ for_next_step))
+	 (Scheme+R6RS increment)
+	 (Scheme+R6RS for_next_step))
 
 	
 	
@@ -91,7 +91,7 @@
     ((_ array lin col val)
        (vector-set! (vector-ref array lin) col val))))
 
-;; Scheme+ version
+;; Scheme+R6RS version
 ;; create a vector of line and column with a function
 ;; (define (create-vector-2d fct lin col)
 ;;   {v <+ (make-array-2d lin col)}

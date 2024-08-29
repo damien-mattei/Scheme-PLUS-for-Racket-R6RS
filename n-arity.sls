@@ -1,4 +1,4 @@
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2024 Damien MATTEI
 
@@ -28,8 +28,8 @@
   (export n-arity)
 
   (import (rnrs base (6))
-	  (Scheme+ operators)
-	  (Scheme+ operators-list))
+	  (Scheme+R6RS operators)
+	  (Scheme+R6RS operators-list))
 	  
   
 

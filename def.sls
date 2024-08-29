@@ -1,5 +1,5 @@
 
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2021-2024 Damien MATTEI
 

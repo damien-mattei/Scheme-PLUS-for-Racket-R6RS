@@ -29,7 +29,7 @@
    (only (rnrs io simple (6)) display newline)
 
 
-   (Scheme+)
+   (Scheme+R6RS)
   
    ) ; end import
 

@@ -1,7 +1,7 @@
 
 ;; assignment (Racket version)
 
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2023-2024 Damien MATTEI
 
@@ -35,7 +35,7 @@
 	  (for (rnrs base (6)) expand) ; import at expand phase (not run phase)
 	  (for (rnrs syntax-case (6)) expand)
 	  (for (only (rnrs io simple (6)) display newline) expand)
-	  (for (Scheme+ parse-square-brackets) expand) ; import at expand phase (not run phase)
+	  (for (Scheme+R6RS parse-square-brackets) expand) ; import at expand phase (not run phase)
 	  (only (rnrs control (6)) when)
 	  (only (srfi :1) first second third fourth fifth)
 	  (only (srfi :13) string-set! string-copy!)
@@ -45,16 +45,16 @@
 	  (rename (flomat) (repeat repeat-flomat)
 			    (shape shape-flomat)
 			    (transpose transpose-flomat))
-	  (Scheme+ parse-square-brackets)
-	  (Scheme+ for_next_step)
-	  (Scheme+ array)
-	  (Scheme+ slice)
-	  (Scheme+ declare)
-	  (Scheme+ block)
-	  (Scheme+ def)
-	  (Scheme+ bracket-apply)
-	  (Scheme+ set-values-plus)
-	  (Scheme+ overload)
+	  (Scheme+R6RS parse-square-brackets)
+	  (Scheme+R6RS for_next_step)
+	  (Scheme+R6RS array)
+	  (Scheme+R6RS slice)
+	  (Scheme+R6RS declare)
+	  (Scheme+R6RS block)
+	  (Scheme+R6RS def)
+	  (Scheme+R6RS bracket-apply)
+	  (Scheme+R6RS set-values-plus)
+	  (Scheme+R6RS overload)
 	  (only (racket match) match ==))
 
  

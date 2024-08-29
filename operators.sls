@@ -1,4 +1,4 @@
-;; This file is part of Scheme+
+;; This file is part of Scheme+R6RS
 
 ;; Copyright 2024 Damien MATTEI
 
@@ -64,8 +64,8 @@
   
   (import (rnrs base (6))
 	  (only (srfi :1) first member memv)
-	  (Scheme+ syntax)
-	  (Scheme+ operators-list))
+	  (Scheme+R6RS syntax)
+	  (Scheme+R6RS operators-list))
 
   
 (define rest cdr)
