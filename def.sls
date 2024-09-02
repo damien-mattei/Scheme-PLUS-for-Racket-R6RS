@@ -30,7 +30,7 @@
 	   if-defined)
 
   (require srfi/31) ;; for 'rec in def.scm
-  
+  ;;(require compatibility/mlist)
 	  
 
 ; Tests

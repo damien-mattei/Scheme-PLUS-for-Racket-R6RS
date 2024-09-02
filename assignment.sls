@@ -53,11 +53,18 @@
 	  (Scheme+R6RS block)
 	  (Scheme+R6RS def)
 	  (Scheme+R6RS bracket-apply)
-	  (Scheme+R6RS set-values-plus)
+	  ;;(Scheme+R6RS set-values-plus) ; now code included here
 	  (Scheme+R6RS overload)
-	  (only (racket match) match ==))
+	  (for (only (racket) print-mpair-curly-braces) expand)
+	  (only (racket match) match ==)
+	  (for (compatibility mlist) expand)
+	  (only (rnrs io simple (6)) display newline)
+	  ;;(Scheme+R6RS parse-square-brackets)
+	  )
 
  
+;; display { } as they are.
+;;(print-mpair-curly-braces #f)
 
 
 ;; note that slicing separator is now : , no more $ (see slice.scm)
@@ -220,97 +227,109 @@
 	((equal? (quote $bracket-apply$) (syntax->datum #'brket-aply)) ;; curly-infix
 
 	 (newline)
+	 ;; display { } as they are.
+	 (print-mpair-curly-braces #f)
+
 	 (display "<- : #'(index ...) = ") (display #'(index ...)) (newline)
 
 	 ;; we parse arguments at posteriori of SRFI 105 parser
-	 (with-syntax ((parsed-args
-			    			     
-			     #`(list #,@(parse-square-brackets-arguments-lister-syntax #'(index ...))))
+	 (with-syntax
+	     ;;(let-syntax
+	     ;; (let
+	     ((parsed-args
+
+	       (cons #'list (parse-square-brackets-arguments-lister-syntax #'(index ...))))
+	      ;;#`(list #,@(parse-square-brackets-arguments-lister-syntax #'(index ...))))
+	      ;;(parse-square-brackets-arguments-lister-syntax #'(index ...)))
 
 			    ) ; end definitions
 			   
-			   (display "<- : #'parsed-args=") (display #'parsed-args) (newline)
-	 
+	   (display "<- : #'parsed-args=") (display #'parsed-args) (newline)
+	   (display "<- : (list? #'parsed-args)=") (display (list? #'parsed-args)) (newline)
+	   (display "<- : (mlist? #'parsed-args)=") (display (mlist? #'parsed-args)) (newline)
+	   (display "<- : (length #'parsed-args)=") (display (length #'parsed-args)) (newline)
 
-	 ;; we parse arguments at posteriori
-	     (case (length (cdr #'parsed-args)) ; putting code here optimise run-time
-			   ;;(case (length #'parsed-args)
+	   #'(assignment-next4list-args container parsed-args expr)))
+
+	   ;; we parse arguments at posteriori
+	   ;;(case (length (cdr #'parsed-args)) ; putting code here optimise run-time
+	   ;;(case (length (syntax->datum #'parsed-args))
+	   ;; (case (length #'parsed-args)
 			       
-			     ;; 0 argument in []
-			     ;; T[]
-			     ;; {v[] <- #(1 2 3)}
-			     ;; > v
-			     ;;'#(1 2 3)
-			     ((0) 
-			      ;;#'(begin
-			      ;; 	  (display "<- case 0 : parsed-args=") (display parsed-args) (newline)
-				  #'(assignment-argument-0 container expr));)  ; possible to have NO index
+	   ;; 		     ;; 0 argument in []
+	   ;; 		     ;; T[]
+	   ;; 		     ;; {v[] <- #(1 2 3)}
+	   ;; 		     ;; > v
+	   ;; 		     ;;'#(1 2 3)
+	   ;; 		     ((0) 
+	   ;; 		      ;;#'(begin
+	   ;; 		      ;; 	  (display "<- case 0 : parsed-args=") (display parsed-args) (newline)
+	   ;; 			  #'(assignment-argument-0 container expr));)  ; possible to have NO index
 
-			     ;; 1 argument in [ ]
-			     ;; T[index]
-			     ((1)
-			      ;;#'(begin
-			       	;;  (display "<- case 1 : parsed-args=") (display parsed-args) (newline)
-				  #'(assignment-argument-1 container
-							   (first parsed-args)
-							   expr));)
+	   ;; 		     ;; 1 argument in [ ]
+	   ;; 		     ;; T[index]
+	   ;; 		     ((1)
+	   ;; 		      ;;(begin
+	   ;; 		       	;;  (display "<- case 1 : parsed-args=") (display parsed-args) (newline)
+	   ;; 			  #'(assignment-argument-1 container
+	   ;; 						   (first parsed-args)
+	   ;; 						   expr));)
 
-			     ;; 2 arguments in [ ]
-			     ;; ex: T[i1 :] , T[: i2], T[i1 i2] , T[: :]   
-			     ;; {#(1 2 3 4 5)[inexact->exact(floor(2.7)) :]}
-			     ;; '#(3 4 5)
-			     ((2)
-			      ;; #'(begin
-			      ;; 	  (display "<- case 2 : parsed-args=") (display parsed-args) (newline)
-				  #'(assignment-argument-2 container
-							   (first parsed-args)
-							   (second parsed-args)
-							   expr));)
+	   ;; 		     ;; 2 arguments in [ ]
+	   ;; 		     ;; ex: T[i1 :] , T[: i2], T[i1 i2] , T[: :]   
+	   ;; 		     ;; {#(1 2 3 4 5)[inexact->exact(floor(2.7)) :]}
+	   ;; 		     ;; '#(3 4 5)
+	   ;; 		     ((2)
+	   ;; 		      ;; #'(begin
+	   ;; 		      ;; 	  (display "<- case 2 : parsed-args=") (display parsed-args) (newline)
+	   ;; 			  #'(assignment-argument-2 container
+	   ;; 						   (first parsed-args)
+	   ;; 						   (second parsed-args)
+	   ;; 						   expr));)
 
-			     ;; 3 arguments in [ ]
-			     ;; T[i1 : i2] , T[i1 i2 i3] , T[: : s]
-			     ((3)
-			      ;; #'(begin
-			      ;; 	  (display  "<- case 3 : 'parsed-args=") (display 'parsed-args) (newline)
-				  ;;#'parsed-args);)
-				  #'(assignment-argument-3 container					  
-				  			 (first parsed-args)
-				  			 (second parsed-args)
-				  			 (third parsed-args)
-				  			 expr));)
+	   ;; 		     ;; 3 arguments in [ ]
+	   ;; 		     ;; T[i1 : i2] , T[i1 i2 i3] , T[: : s]
+	   ;; 		     ((3)
+	   ;; 		      ;; #'(begin
+	   ;; 		      ;; 	  (display  "<- case 3 : 'parsed-args=") (display 'parsed-args) (newline)
+	   ;; 			  ;;#'parsed-args);)
+	   ;; 			  #'(assignment-argument-3 container					  
+	   ;; 			  			 (first parsed-args)
+	   ;; 			  			 (second parsed-args)
+	   ;; 			  			 (third parsed-args)
+	   ;; 			  			 expr));)
 			     
-			     ;; 4 arguments in [ ]
-			     ;; T[: i2 : s] , T[i1 : : s] , T[i1 : i3 :] , T[i1 i2 i3 i4]
-			     ((4)
-			      #'(assignment-argument-4 container
-						       (first parsed-args)
-						       (second parsed-args)
-						       (third parsed-args)
-						       (fourth parsed-args)
-						       expr))
+	   ;; 		     ;; 4 arguments in [ ]
+	   ;; 		     ;; T[: i2 : s] , T[i1 : : s] , T[i1 : i3 :] , T[i1 i2 i3 i4]
+	   ;; 		     ((4)
+	   ;; 		      #'(assignment-argument-4 container
+	   ;; 					       (first parsed-args)
+	   ;; 					       (second parsed-args)
+	   ;; 					       (third parsed-args)
+	   ;; 					       (fourth parsed-args)
+	   ;; 					       expr))
 
-			     ;; 5 arguments in [ ]
-			     ;; T[i1 : i3 : s] , T[i1 i2 i3 i4 i5]
-			     ((5)
-			      #'(assignment-argument-5 container
-						       (first parsed-args)
-						       (second parsed-args)
-						       (third parsed-args)
-						       (fourth parsed-args)
-						       (fifth parsed-args)
-						       expr))
+	   ;; 		     ;; 5 arguments in [ ]
+	   ;; 		     ;; T[i1 : i3 : s] , T[i1 i2 i3 i4 i5]
+	   ;; 		     ((5)
+	   ;; 		      #'(assignment-argument-5 container
+	   ;; 					       (first parsed-args)
+	   ;; 					       (second parsed-args)
+	   ;; 					       (third parsed-args)
+	   ;; 					       (fourth parsed-args)
+	   ;; 					       (fifth parsed-args)
+	   ;; 					       expr))
 
-			     ;; more than 5 arguments in [ ]
-			     ;; T[i1 i2 i3 i4 i5 i6 ...]
-			     (else ; case
-			      #'(assignment-argument-6-and-more container parsed-args expr)))))
+	   ;; 		     ;; more than 5 arguments in [ ]
+	   ;; 		     ;; T[i1 i2 i3 i4 i5 i6 ...]
+	   ;; 		     (else ; case
+	   ;; 		      #'(assignment-argument-6-and-more container parsed-args expr)))))
 
       
 
-	     (else
+	     (else ; cond
 	      #'(define-or/and-set!-values (brket-aply container index ...) expr)))) ;; the argument's names does not match the use
     
-
 
     
     ;;  special form like : (<- ($bracket-apply$ T 3) ($bracket-apply$ T 4))
@@ -404,6 +423,82 @@
     )))
 
 
+(define (assignment-next4list-args container parsed-args expr) 
+
+  	   (case (length parsed-args)
+			       
+			     ;; 0 argument in []
+			     ;; T[]
+			     ;; {v[] <- #(1 2 3)}
+			     ;; > v
+			     ;;'#(1 2 3)
+			     ((0) 
+			      ;;(begin
+			      ;; 	  (display "<- case 0 : parsed-args=") (display parsed-args) (newline)
+				  (assignment-argument-0 container expr));)  ; possible to have NO index
+
+			     ;; 1 argument in [ ]
+			     ;; T[index]
+			     ((1)
+			      ;;(begin
+			       	;;  (display "<- case 1 : parsed-args=") (display parsed-args) (newline)
+				  (assignment-argument-1 container
+							 (first parsed-args)
+							 expr));)
+
+			     ;; 2 arguments in [ ]
+			     ;; ex: T[i1 :] , T[: i2], T[i1 i2] , T[: :]   
+			     ;; {#(1 2 3 4 5)[inexact->exact(floor(2.7)) :]}
+			     ;; '#(3 4 5)
+			     ;;
+			     ;; {(vector 1 2 3 4 5)[2 :]}
+			     ;; bracket-apply : #'parsed-args=(.#<syntax:git/Scheme-PLUS-for-Racket-R6RS/bracket-apply.sls:148:30 list> .#<syntax 2> .#<syntax :>)
+			     ;; '#(3 4 5)
+			     ((2)
+			      ;; (begin
+			      ;; 	  (display "<- case 2 : parsed-args=") (display parsed-args) (newline)
+				  (assignment-argument-2 container
+							 (first parsed-args)
+							 (second parsed-args)
+							 expr));)
+
+			     ;; 3 arguments in [ ]
+			     ;; T[i1 : i2] , T[i1 i2 i3] , T[: : s]
+			     ((3)
+			      ;; (begin
+			      ;; 	  (display  "<- case 3 : 'parsed-args=") (display 'parsed-args) (newline)
+				 
+				  (assignment-argument-3 container					  
+				  			 (first parsed-args)
+				  			 (second parsed-args)
+				  			 (third parsed-args)
+				  			 expr));)
+			     
+			     ;; 4 arguments in [ ]
+			     ;; T[: i2 : s] , T[i1 : : s] , T[i1 : i3 :] , T[i1 i2 i3 i4]
+			     ((4)
+			      (assignment-argument-4 container
+						       (first parsed-args)
+						       (second parsed-args)
+						       (third parsed-args)
+						       (fourth parsed-args)
+						       expr))
+
+			     ;; 5 arguments in [ ]
+			     ;; T[i1 : i3 : s] , T[i1 i2 i3 i4 i5]
+			     ((5)
+			      (assignment-argument-5 container
+						       (first parsed-args)
+						       (second parsed-args)
+						       (third parsed-args)
+						       (fourth parsed-args)
+						       (fifth parsed-args)
+						       expr))
+
+			     ;; more than 5 arguments in [ ]
+			     ;; T[i1 i2 i3 i4 i5 i6 ...]
+			     (else ; case
+			      (assignment-argument-6-and-more container parsed-args expr))))
 
 
 
@@ -605,65 +700,6 @@
 
 
 
-;; (define (assignmentnext container expr args)
-
-;;   (case (length args)
-
-;;     ;; 0 argument in []
-;;     ;; T[]
-;;     ((0)
-;;      (display "assignmentnext : container =") (display container) (newline)
-;;      (assignment-argument-0 container  expr))
-    
-;;     ;; 1 argument in [ ]
-;;     ;; T[index]
-;;     ((1) (assignment-argument-1 container (first args) expr))
-     
-;;     ;; 2 arguments in [ ]
-;;     ;; ex: T[i1 $] , T[$ i2], T[i1 i2] , T[$ $]
-    
-;;     ;; {#(1 2 3 4 5)[inexact->exact(floor(2.7)) $]}
-;;     ;; '#(3 4 5)
-;;     ((2) (assignment-argument-2 container
-;; 				(first args)
-;; 				(second args)
-;; 				expr))
-
-;;     ;; 3 arguments in [ ]
-;;     ;; T[i1 $ i2] , T[i1 i2 i3] , T[$ $ s]
-;;     ((3) (assignment-argument-3 container
-;; 				(first args)
-;; 				(second args)
-;; 				(third args)
-;; 				expr))
-
-
-;;     ;; 4 arguments in [ ]
-;;     ;; T[$ i2 $ s] , T[i1 $ $ s] , T[i1 $ i3 $] , T[i1 i2 i3 i4]
-;;     ((4) (assignment-argument-4 container
-;; 				(first args)
-;; 				(second args)
-;; 				(third args)
-;; 				(fourth args)
-;; 				expr))
-
- 
-
-;;     ;; 5 arguments in [ ]
-;;     ;; T[i1 $ i3 $ s] , T[i1 i2 i3 i4 i5]
-;;     ((5) (assignment-argument-5 container
-;; 				(first args)
-;; 				(second args)
-;; 				(third args)
-;; 				(fourth args)
-;; 				(fifth args)
-;; 				expr))
-
-
-;;     ;; more than 5 arguments in [ ]
-;;     ;; T[i1 i2 i3 i4 i5 i6 ...]
-;;     (else
-;;      (assignment-argument-6-and-more container expr args))))
 
 
 (define-syntax assignmentnext
@@ -988,6 +1024,8 @@
 
 
 (define (assignment-argument-1 container-eval index-eval expr-eval)
+
+  ;;(display "assignment.sls : assignment-argument-1") (newline)
   
   (if (equal? index-eval slice)  ;; T[$]
       
@@ -1601,6 +1639,151 @@
   (if (vector? container)
       (function-array-n-dim-set! container expr (reverse args)) ;; (array-n-dim-set! array value index1 index2 ...)
       (array-set! container (list->vector args) expr))) 
+
+
+
+
+
+;; this version can set values for arrays,hash tables,etc
+;; it uses the Scheme+R6RS assignment operator: <-
+(define-syntax set!-values-plus
+  (syntax-rules ()
+    ((_ (var var* ...) exp)
+     (call-with-values
+       (lambda () exp)
+       (lambda (value . rest)
+         (<- var value) ;; instead of set! i use the Scheme+R6RS assignment operator
+         (set!-values-plus (var* ...) (apply values rest)))))
+    ((_ () exp)
+     (call-with-values
+       (lambda () exp)
+       (lambda () (values)))))) ; nothing to do!
+
+;; (define x)
+;; (define y)
+;; (define z)
+;; (set!-values (x y z) (values 0 1 2))
+;; (pk x y z)
+
+
+;; this define a variable or if it already exists set it to '()
+(define-syntax define-or-clear-values
+  (syntax-rules ()
+    ((_ var ...) (begin
+		    (<- var '()) ; in racket <- can possibly define the value (if not already defined) 
+		    ...))))
+
+;; define or/and set! values
+(define-syntax define-or/and-set!-values
+  (syntax-rules ()
+    ((_ (var ...) expr)
+     (begin
+       (define-or-clear-values var ...)
+       (set!-values-plus (var ...) expr)))))
+
+
+;; examples:
+
+;; {(a b c d e) <- (values 1 2 3 4 5)}
+;; id=.#<syntax a>
+;; if-defined : where=#f
+
+;; id=.#<syntax b>
+;; if-defined : where=#f
+
+;; id=.#<syntax c>
+;; if-defined : where=#f
+
+;; id=.#<syntax d>
+;; if-defined : where=#f
+
+;; id=.#<syntax e>
+;; if-defined : where=#f
+
+;; id=.#<syntax a>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> a #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> a 0 0 0)
+
+;; id=.#<syntax b>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> b #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> b 0 0 0)
+
+;; id=.#<syntax c>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> c #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> c 0 0 0)
+
+;; id=.#<syntax d>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> d #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> d 0 0 0)
+
+;; id=.#<syntax e>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> e #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> e 0 0 0)
+
+;; > (list a b c d e)
+;; '(1 2 3 4 5)
+
+
+
+;; (define T (make-vector 5))
+;; {(a T[3] c d e) <- (values 1 -2 3 4 5)}
+;; id=.#<syntax a>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> a #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> a 0 0 0)
+
+;; id=.#<syntax c>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> c #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> c 0 0 0)
+
+;; id=.#<syntax d>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> d #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> d 0 0 0)
+
+;; id=.#<syntax e>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> e #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> e 0 0 0)
+
+;; id=.#<syntax a>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> a #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> a 0 0 0)
+
+;; id=.#<syntax c>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> c #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> c 0 0 0)
+
+;; id=.#<syntax d>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> d #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> d 0 0 0)
+
+;; id=.#<syntax e>
+;; if-defined : where=(#<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> e #<module-path-index="/Users/mattei/Scheme-PLUS-for-Racket/main/Scheme-PLUS-for-Racket/src/REPL-Scheme-PLUS.rkt"> e 0 0 0)
+
+;; > {list(a T[3] c d e)}
+;; '(1 -2 3 4 5)
+;; > T
+;; '#(0 0 0 -2 0)
+;; > 
+
+
+
+;; > (return-values (values 1 2 3))
+;; 1
+;; 2
+;; 3
+;; > (return-values (values 1))
+;; 1
+;; > (return-values 1)
+;; 1
+;; > (return-values (sin 0.7))
+;; 0.644217687237691
+(define-syntax return-values
+    (syntax-rules ()
+      ((_ expr) (call-with-values (lambda () expr)
+                                  values))))
+
+;; > ((create-return-values 3))
+;; 3
+;; > ((create-return-values (values 1 2 3)))
+;; 1
+;; 2
+;; 3
+(define-syntax create-return-values
+    (syntax-rules ()
+      ((_ expr) (lambda () (return-values expr)))))
+
+
+
+;;(print-mpair-curly-braces #f)
+
+
 
 
 ) ; end library

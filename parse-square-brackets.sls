@@ -133,6 +133,6 @@
 ;; 					     (lambda (op a b) (op a b))
 ;; 					     (get-operator-precedence)))
 
-'() ;; why this? i forgot
+'() ;; why this? statement required
 
 ) ; end module
