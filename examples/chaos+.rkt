@@ -199,13 +199,9 @@
 				  (stream-take
 				   (chaos p q d x y) n))}
 
-		(display "after imlst-points") (newline)
-		(display (mlist? imlst-points)) (newline)
 		{lst-points <- (list->mlist imlst-points)}
 	      
 		(define max-norm-x-y (max-list-norm-x-y lst-points)) ; maximum
-
-		(display "after max-norm-x-y") (newline)
 
 		(when graphic-mode ; no memory overloading in this mode
 		  ;; Make a frame by instantiating the frame% class

@@ -15,3 +15,7 @@ Designed to use with [SRFI 105 Curly Infix reader for Racket](https://github.com
 
 A full [graphic and plotting example](https://github.com/damien-mattei/Scheme-PLUS-for-Racket-R6RS/blob/main/examples/chaos%2B.rkt) of Scheme+ and SRFI-105 Curly Infix with Racket/R6RS about [Chaos Theory](https://en.wikipedia.org/wiki/Chaos_theory).
 
+![Chaos DrRacket & Terminal](examples/img/chaos-DrRacket.png "Chaos DrRacket & Terminal")
+
+![Chaos GUI & Emacs](examples/img/chaos-gui-emacs.png "Chaos GUI & Emacs")
+
