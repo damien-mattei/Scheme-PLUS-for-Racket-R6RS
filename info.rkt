@@ -2,8 +2,8 @@
 
 (define pkg-name "Scheme-PLUS-for-Racket-R6RS") ; "+" not allowed in package names
 (define collection "Scheme+R6RS")
-(define compile-omit-paths '("deprecated" "compiled" "src"))
-(define test-omit-paths '("deprecated" "compiled" "src"))
+(define compile-omit-paths '("deprecated" "compiled" "src" "examples"))
+(define test-omit-paths '("deprecated" "compiled" "src" "examples"))
 (define pkg-desc "Scheme+ for Racket R6RS")
 (define version "9.1")
 (define pkg-authors '(mattei))
