@@ -9,4 +9,4 @@ Use in an R6RS module:
 (import Scheme+R6RS)
 
 
-@hyperlink["See general documentation of Scheme+"]{https://github.com/damien-mattei/Scheme-PLUS-for-Racket-R6RS/blob/gh-pages/README.md}
+@hyperlink["See general documentation of Scheme+"]{https://github.com/damien-mattei/Scheme-PLUS-for-Racket-R6RS/blob/main/README.md}
