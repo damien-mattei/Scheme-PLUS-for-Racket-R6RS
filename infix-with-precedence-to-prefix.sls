@@ -35,6 +35,7 @@
 	  (only (srfi :1) memq)
 	  ;;(operators-list)
 	  (only (racket) syntax)
+	  (only (rnrs io simple (6)) display newline) ;; for debug only
 	  (Scheme+R6RS syntax))
 	  
   
@@ -44,20 +45,20 @@
 (define (!0-generic terms  operator-precedence creator)
 
   ;; (newline)
-  ;; (display "!0-generic : terms=") (display terms) (newline)
+  (display "!0-generic : terms=") (display terms) (newline)
   ;; (display "!0-generic : operator-precedence=") (display operator-precedence) (newline)
 
-  (define rv
+  ;;(define rv
     (if (null? terms) ;; i added this null case but with correct input this should not be necessary
 	terms
 	(car (!*-generic (reverse terms) ; for exponentiation evaluated from right to left
 			 operator-precedence
 			 #;#f
-			 creator))))
+			 creator)));)
 
   ;; (display "!0-generic : rv=") (display rv) (newline)
   ;; (newline)
-  rv
+  ;;rv
 
   )
 

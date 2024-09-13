@@ -74,5 +74,5 @@
 		       (display "$nfx$ : parsed-args=") (display #'parsed-args) (newline)
 		       #'parsed-args)))))
 
-) ; end module
+) ; end library
 

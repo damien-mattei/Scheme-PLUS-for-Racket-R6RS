@@ -147,11 +147,11 @@
 
 		      (cons #'list 
 		      	    (parse-square-brackets-arguments-lister-syntax #'(arg-bracket ...))))) 
-
-		    (newline)
-		    (display "bracket-apply : #'parsed-args=") (display #'parsed-args) (newline)
+	 
+	 (newline)
+	 (display "bracket-apply : #'parsed-args=") (display #'parsed-args) (newline)
 		    
-		    #'($bracket-apply$next4list-args container parsed-args))))))
+	 #'($bracket-apply$next4list-args container parsed-args))))))
 
 
 
