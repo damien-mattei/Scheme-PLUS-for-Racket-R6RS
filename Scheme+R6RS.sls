@@ -15,7 +15,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-;; version 9.2 (to match other scheme+ implementations)
+;; version 9.5
 
 #!r6rs
 
@@ -64,6 +64,9 @@
    for/break-cont
    for-each-in
 
+   ;; sequence
+   in-range
+   reversed
    
    ;; control
    condx

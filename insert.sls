@@ -25,7 +25,10 @@
 (library (insert)
 
   (export insert
-	  insert-set!)
+	  insert-set!
+	  insert-tail
+	  insert-tail-set!
+	  append-tail-set!)
   
   (import (rnrs base (6)))
   
@@ -40,6 +43,23 @@
   (syntax-rules ()
     ((_ expr var)
      (set! var (insert expr var)))))
+
+;; insert and set it to the new result list
+(define-syntax append-tail-set!
+  (syntax-rules ()
+    ((_ lst lst-tail)
+     (set! lst (append lst lst-tail)))))
+
+;; insert at the tail of a list 
+(define (insert-tail lst elem)
+  (append lst (list elem)))
+
+;; insert at the tail of a list and set it to the new result list
+(define-syntax insert-tail-set!
+  (syntax-rules ()
+    ((_ lst elem)
+     (set! lst (insert-tail lst elem)))))
+
 
 ) ;; end module declaration
 

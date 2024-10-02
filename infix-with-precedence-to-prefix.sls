@@ -29,7 +29,8 @@
 (library (infix-with-precedence-to-prefix) ; R6RS
 
   (export !*prec-generic  
-	  !0-generic)
+	  ;;!0-generic
+	  )
 
   (import (rnrs base (6))
 	  (only (srfi :1) memq)
@@ -40,27 +41,27 @@
 	  
   
 
-
+;; DEPRECATED
 ;;; evaluates `terms` symbolically or numerically as a basic infix expression
-(define (!0-generic terms  operator-precedence creator)
+;; (define (!0-generic terms  operator-precedence creator)
 
-  ;; (newline)
-  (display "!0-generic : terms=") (display terms) (newline)
-  ;; (display "!0-generic : operator-precedence=") (display operator-precedence) (newline)
+;;   ;; (newline)
+;;   (display "!0-generic : terms=") (display terms) (newline)
+;;   ;; (display "!0-generic : operator-precedence=") (display operator-precedence) (newline)
 
-  ;;(define rv
-    (if (null? terms) ;; i added this null case but with correct input this should not be necessary
-	terms
-	(car (!*-generic (reverse terms) ; for exponentiation evaluated from right to left
-			 operator-precedence
-			 #;#f
-			 creator)));)
+;;   ;;(define rv
+;;     (if (null? terms) ;; i added this null case but with correct input this should not be necessary
+;; 	terms
+;; 	(car (!*-generic (reverse terms) ; for exponentiation evaluated from right to left
+;; 			 operator-precedence
+;; 			 #;#f
+;; 			 creator)));)
 
-  ;; (display "!0-generic : rv=") (display rv) (newline)
-  ;; (newline)
-  ;;rv
+;;   ;; (display "!0-generic : rv=") (display rv) (newline)
+;;   ;; (newline)
+;;   ;;rv
 
-  )
+;;   )
 
 
 
@@ -197,6 +198,16 @@
 		  creator))))
 
 
+;; wrap a null test
+(define (check-null-and-!*-generic terms operator-precedence creator)
+
+  (if (null? terms) ;; never for infix as there is e1 op1 e2 op2 e3 at least
+	terms
+	(!*-generic (reverse terms) ; start reversed for exponentiation (highest precedence operator)
+		    operator-precedence
+		    creator)))
+
+
 
 (define (!*prec-generic terms  operator-precedence creator)   ;; precursor of !*-generic
 
@@ -204,15 +215,12 @@
   ;;(display "!*prec-generic : operator-precedence=") (display operator-precedence) (newline)
 
   (define rv
-    (if (null? terms) 
-	terms
-	(!*-generic (reverse terms) ; start reversed for exponentiation (highest precedence operator)
-		    operator-precedence
-		    ;;#f
-		    creator)))
+    (check-null-and-!*-generic  terms ; start reversed for exponentiation (highest precedence operator)
+				operator-precedence
+				creator))
 
-  ;;(display "!*prec-generic : rv=") (display rv) (newline)
-  ;;(newline)
+  ;; (display "!*prec-generic : rv=") (display rv) (newline)
+  ;; (newline)
   
   rv)
 
