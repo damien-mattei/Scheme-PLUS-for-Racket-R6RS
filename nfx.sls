@@ -30,9 +30,12 @@
   (import (rnrs base (6))
 	  (for (rnrs base (6)) expand) ; import at expand phase (not run phase)
 	  (for (rnrs syntax-case (6)) expand)
+	  
 	  (for (Scheme+R6RS n-arity) expand) ; at phase: 1; the transformer environment
 	  (for (Scheme+R6RS infix-with-precedence-to-prefix) expand) ; at phase: 1; the transformer environment
-	  (for (Scheme+R6RS operators-list) expand);; at phase: 1; the transformer environment
+	  (for (Scheme+R6RS operators-list) expand)
+	  (for (Scheme+R6RS operators) expand);; at phase: 1; the transformer environment
+	  
 	  (for (only (rnrs io simple (6)) display newline) expand)
 	  )
 
@@ -62,16 +65,19 @@
        
 	 (with-syntax ;; let
 			 
-		       ((parsed-args
-			 ;; TODO : make n-arity for <- and <+ only (because could be false with ** , but not implemented in n-arity for now)
-			 (n-arity ;; this avoid : '{x <- y <- z <- t <- u <- 3 * 4 + 1}
-			   ;; SRFI-105.scm : !0 result = (<- (<- (<- (<- (<- x y) z) t) u) (+ (* 3 4) 1)) ;; fail set! ...
-			  ;; transform in : '(<- x y z t u (+ (* 3 4) 1))
-			  (car
-			   (!*prec-generic #'(e1 op1 e2 op2 e3 op ...) ; apply operator precedence rules
-					   infix-operators-lst-for-parser-syntax
-					   ;;(get-infix-operators-lst-for-parser-syntax)
-					   (lambda (op a b) (list op a b)))))))
+	     ((parsed-args
+
+	       (let ((expr (car
+			    (!*prec-generic #'(e1 op1 e2 op2 e3 op ...) ; apply operator precedence rules
+					    infix-operators-lst-for-parser-syntax
+					    ;;(get-infix-operators-lst-for-parser-syntax)
+					    (lambda (op a b) (list op a b))))))
+		 
+		 (if (or (isDEFINE? expr)
+			 (isASSIGNMENT? expr))
+			 ;;  make n-arity for <- and <+ only (because could be false with ** , but not implemented in n-arity for now)
+		     (n-arity expr)
+		     expr))))
 	   
 	   (display "$nfx$ : parsed-args=") (display #'parsed-args) (newline)
 	   #'parsed-args)))))
