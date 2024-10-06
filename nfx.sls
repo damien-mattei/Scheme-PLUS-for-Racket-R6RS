@@ -35,8 +35,10 @@
 	  (for (Scheme+R6RS infix-with-precedence-to-prefix) expand) ; at phase: 1; the transformer environment
 	  (for (Scheme+R6RS operators-list) expand)
 	  (for (Scheme+R6RS operators) expand);; at phase: 1; the transformer environment
+	  (for (Scheme+R6RS infix) expand)
 	  
 	  (for (only (rnrs io simple (6)) display newline) expand)
+	  (for (only (rnrs control (6)) when) expand)
 	  )
 
 
@@ -67,20 +69,32 @@
 			 
 	     ((parsed-args
 
-	       (let ((expr (car
-			    (!*prec-generic #'(e1 op1 e2 op2 e3 op ...) ; apply operator precedence rules
-					    infix-operators-lst-for-parser-syntax
-					    ;;(get-infix-operators-lst-for-parser-syntax)
-					    (lambda (op a b) (list op a b))))))
-		 
-		 (if (or (isDEFINE? expr)
-			 (isASSIGNMENT? expr))
-			 ;;  make n-arity for <- and <+ only (because could be false with ** , but not implemented in n-arity for now)
-		     (n-arity expr)
-		     expr))))
-	   
-	   (display "$nfx$ : parsed-args=") (display #'parsed-args) (newline)
-	   #'parsed-args)))))
+	       (begin
 
-) ; end library
+		 ;; (display "$nfx$: #'(e1 op1 e2 op2 e3 op ...)=") (display #'(e1 op1 e2 op2 e3 op ...)) (newline)
+		 ;; (display "$nfx$: (syntax->list #'(e1 op1 e2 op2 e3 op ...))=") (display (syntax->list #'(e1 op1 e2 op2 e3 op ...))) (newline)
+		 		
+		 ;; pre-check we have an infix expression because parser can not do it
+		 (when (not (infix? #'(e1 op1 e2 op2 e3 op ...)
+			    operators-lst-syntax))
+		   
+		   (error "$nfx$ : arguments do not form an infix expression : here is #'(e1 op1 e2 op2 e3 op ...) ";; and (syntax->list #'(e1 op1 e2 op2 e3 op ...)) for debug:"
+			  #'(e1 op1 e2 op2 e3 op ...)))
+		 
+
+		 (let ((expr (car
+			      (!*prec-generic #'(e1 op1 e2 op2 e3 op ...) ; apply operator precedence rules
+					      infix-operators-lst-for-parser-syntax
+					      (lambda (op a b) (list op a b))))))
+		   
+		   (if (or (isDEFINE? expr)
+			   (isASSIGNMENT? expr))
+		       ;;  make n-arity for <- and <+ only (because could be false with ** , but not implemented in n-arity for now)
+		       (n-arity expr)
+		       expr)))))
+	      
+	      (display "$nfx$ : parsed-args=") (display #'parsed-args) (newline)
+	      #'parsed-args)))))
+  
+  ) ; end library
 
