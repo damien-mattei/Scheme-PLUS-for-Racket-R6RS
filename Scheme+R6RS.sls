@@ -29,10 +29,14 @@
    ;; definition and block
    
    def
+   define
+   define-infix
+   
    <+ ;;+> not allowed in R6RS
    ⥆ ⥅
    :+ ;;+:
    declare
+   
    $> ; begin
    ; (let () ...
    $+> 
@@ -122,6 +126,7 @@
 
    ;; definition and block
    (Scheme+R6RS def)
+   (Scheme+R6RS def-nfx) ; infix define
    (Scheme+R6RS declare)
    (Scheme+R6RS block)
 

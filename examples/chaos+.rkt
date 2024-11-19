@@ -11,7 +11,7 @@
   (import
    
    ;; import base R6RS
-   (except (rnrs base (6)) if) ; Scheme+ has it own 'if' compatible with Scheme's 'if'
+   (except (rnrs base (6)) if define) ; Scheme+ has it own 'if' compatible with Scheme's 'if'  and its own 'define'
 
    ;;(only (racket) print-mpair-curly-braces) ; list as Lisp and Scheme , no { }
 
@@ -78,7 +78,10 @@
     {pa ← 3} ; petit axe / little axis
     {x ← z-vect[0]}
     {y ← z-vect[1]}
-    {z ← x + i * y} ; complex number
+    
+    ;;{z ← x + i * y} ; complex number
+    (define z  x + i * y) ; complex number
+    
     {(x y) ← (to-screen-multi-values z)}
     {x ← x - (quotient ga 2)}
     {y ← y - (quotient pa 2)}
@@ -112,18 +115,18 @@
   
   (define (chaos p q d x0 y0)
     
-    (define a {2 * cos{2 * pi * p / q}}) ; or {2 * (cos {2 * pi * p / q})} or {2 * cos({2 * pi * p / q})}
-    (define ksx (sqrt {{2 + a} / 2})) ; or sqrt{{2 + a} / 2}
-    {ksy := (sqrt {{2 - a} / 2})} ; or (define ksy (sqrt {{2 - a} / 2}))
+    (define a   2 * (cos (2 * pi * p / q)));; 2 * (cos {2 * pi * p / q})) ; {2 * cos{2 * pi * p / q}}) ; or {2 * (cos {2 * pi * p / q})} or {2 * cos({2 * pi * p / q})}
+    (define-infix ksx  (sqrt ((2 + a) / 2))) ;;(sqrt {(2 + a) / 2})) ; (define ksx (sqrt {{2 + a} / 2})) ; or sqrt{{2 + a} / 2}
+    {ksy := (sqrt ((2 - a) / 2))} ; {ksy := (sqrt {(2 - a) / 2})} ;{ksy := (sqrt {{2 - a} / 2})} ; or (define ksy (sqrt {{2 - a} / 2}))
     
     (stream-map (lambda (z)
                   (match-let (((vector x y) z))
-                    (vector {{ksx / (sqrt 2)} * {x + y}}
-			    {{ksy / (sqrt 2)} * {(- x) + y}})))
+                    (vector {(ksx / (sqrt 2)) * (x + y)}
+			    {(ksy / (sqrt 2)) * ((- x) + y)})))
                 (stream-iterate (lambda (z)
                                   (match-let (((vector x y) z))
                                     (vector
-                                     {{a * x} + y + {d * x} / (add1 {x ** 2})} ; infix left to right evaluation avoid extra parenthesis but is hard for humans
+                                     {(a * x) + y + (d * x) / (add1 (x ** 2))} ; infix left to right evaluation avoid extra parenthesis but is hard for humans
                                      (- x))))
 				(vector x0 y0))))
 
@@ -132,28 +135,28 @@
 
   
   (define *data* '((1  34 5 0.1 0 60000)
-                 (1  26 5 0.1 0 90000)
-                 (1  25 5 0.1 0 60000)
-                 (1  13 5 0.1 0 60000)
-                 (1  10 5 0.5 0 60000)
-                 (1   8 5 0.1 0 60000)
-                 (1   7 5 1   0 60000)
-                 (2  13 5 1   0 60000)
-                 (1   5 5 0.1 0 60000)
-                 (3  14 5 0.1 0 60000)
-                 (2   9 5 0.1 0 60000)
-		 (3  13 5 0.1 0 60000)
-                 (3  10 5 1   0 60000)
-                 (8  25 5 0.1 0 60000)
-                 (1   3 5 0.1 0 60000)
-                 (6  17 5 0.5 0 60000)
-                 (3   8 5 1   0 60000)
-                 (5  13 5 0.1 0 60000)
-                 (2   5 5 1   0 60000)
-                 (7  17 5 0.1 0 60000)
-                 (11 25 5 0.1 0 60000)
-                 (6  13 5 1   0 90000)
-                 (8  17 5 0.1 1 60000)))
+                   (1  26 5 0.1 0 90000)
+                   (1  25 5 0.1 0 60000)
+                   (1  13 5 0.1 0 60000)
+                   (1  10 5 0.5 0 60000)
+                   (1   8 5 0.1 0 60000)
+                   (1   7 5 1   0 60000)
+                   (2  13 5 1   0 60000)
+                   (1   5 5 0.1 0 60000)
+                   (3  14 5 0.1 0 60000)
+                   (2   9 5 0.1 0 60000)
+		   (3  13 5 0.1 0 60000)
+                   (3  10 5 1   0 60000)
+                   (8  25 5 0.1 0 60000)
+                   (1   3 5 0.1 0 60000)
+                   (6  17 5 0.5 0 60000)
+                   (3   8 5 1   0 60000)
+                   (5  13 5 0.1 0 60000)
+                   (2   5 5 1   0 60000)
+                   (7  17 5 0.1 0 60000)
+                   (11 25 5 0.1 0 60000)
+                   (6  13 5 1   0 90000)
+                   (8  17 5 0.1 1 60000)))
 
 
   
@@ -234,7 +237,7 @@
 			      (send dc set-pen "black" 1 'solid)
 
 			      ;; compute the units of graph
-			      {unit-axis-in-pixel ← (min xws yws) / {2 * (sqrt max-norm-x-y)}}
+			      {unit-axis-in-pixel ← (min xws yws) / (2 * (sqrt max-norm-x-y))}
 			      
 			      ;; display the points
 			      (for-racket ([point imlst-points])

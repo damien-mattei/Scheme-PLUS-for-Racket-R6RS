@@ -90,12 +90,27 @@
 ;; '(+ a e (- b c) d)
 ;; > (n-arity '(+ (+ a (+ e (- b (+ f (+ g c)))) d) h))
 ;; '(+ a e (- b (+ f g c)) d h)
-;; >
+
+
+;;  (n-arity '(+ (+ a (+ e (- b (+ f (+ g c)))) d) h))
+;; (mcons
+;;  '+
+;;  (mcons
+;;   'a
+;;   (mcons
+;;    'e
+;;    (mcons (mcons '- (mcons 'b (mcons (mcons '+ (mcons 'f (mcons 'g (mcons 'c '())))) '()))) (mcons 'd (mcons 'h '()))))))
+
+
 
 ;;  (n-arity '(<- a (<- b (<- c 7))))
 ;; '(<- a b c 7)
 ;; (n-arity '(<- x (<- a (<- b (- b c)))))
 ;; '(<- x a b (- b c))
+
+;; warning in R6RS (mutable lists):
+;; (n-arity '(<- x (<- a (<- b (- b c)))))
+;; (mcons '<- (mcons 'x (mcons 'a (mcons 'b (mcons (mcons '- (mcons 'b (mcons 'c '()))) '())))))
 
 ;; warning: usualy give a false result if operator is not associative
 ;; could not work with exponentiation, expt , ** : is evaluation is from right to left (opposite normal evaluation and not associative! and not commutative!)

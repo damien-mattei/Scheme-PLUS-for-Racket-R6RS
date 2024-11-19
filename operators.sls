@@ -42,11 +42,12 @@
 	  EQUIV-op?
 	  DEFINE-op?
 	  ASSIGNMENT-op?
+	  EXPONENTIAL-op?
+	  MULTIPLY-op?
 	  is-associative-operator?
 
 	  ;; expression tests
 	  isADD?
-	  MULTIPLY-op?
 	  isMULTIPLY?
 	  isOR?
 	  isAND?
@@ -57,6 +58,7 @@
 	  isXOR?
 	  isDEFINE?
 	  isASSIGNMENT?
+	  isEXPONENTIAL?
 	  isASSOCIATIVE?	  
 
 	  )
@@ -186,7 +188,9 @@
       (member-syntax oper assignment-operator-syntax)))
 
 
-
+(define (EXPONENTIAL-op? oper)
+  (or (memv oper exponential-operator)
+      (member-syntax oper exponential-operator-syntax)))
 
 
 (define (is-associative-operator? op)
@@ -255,6 +259,8 @@
 (define (isASSIGNMENT? expr)
   (and (pair? expr) (ASSIGNMENT-op?  (operator expr))))
 
+(define (isEXPONENTIAL? expr)
+  (and (pair? expr) (ASSIGNMENT-op?  (operator expr))))
 
 (define (isASSOCIATIVE? expr)
   ;;(display "isASSOCIATIVE?") (newline)

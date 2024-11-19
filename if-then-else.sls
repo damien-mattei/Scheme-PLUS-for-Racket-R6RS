@@ -32,6 +32,7 @@
   (export if)
   
   (import ;;(rnrs base (6))
+   
    (except (rnrs base (6)) if)
    
    ;;(rnrs syntax-case (6))
@@ -41,14 +42,15 @@
    ;;(for (rnrs base (6)) expand) ; import at expand phase (not run phase)
    (for ;;(except (rnrs base (6)) if) expand)
     (rename (rnrs base (6)) (if if-scheme)) expand)
-	  (for (rnrs syntax-case (6)) expand)
-	  (only (srfi :1) third)
-	  (Scheme+R6RS declare)
-	  (Scheme+R6RS insert)
-	  (Scheme+R6RS syntax)
-	  (for (Scheme+R6RS if-parser) expand)
-	  (for (only (rnrs io simple (6)) display newline) expand))
-
+   
+   (for (rnrs syntax-case (6)) expand)
+   (only (srfi :1) third)
+   (Scheme+R6RS declare)
+   (Scheme+R6RS insert)
+   (Scheme+R6RS syntax)
+   (for (Scheme+R6RS if-parser) expand)
+   (for (only (rnrs io simple (6)) display newline) expand))
+  
 
 
   

@@ -12,7 +12,7 @@
 
   (import
 
-   (except (rnrs base (6)) if) ; Scheme+ has it own 'if' compatible with Scheme's 'if'
+   (except (rnrs base (6)) if define) ; Scheme+ has its own 'if' compatible with Scheme's 'if' and its own 'define'
 
    ;; example:
    ;; (rename (rnrs base (6)) (+ orig+)
@@ -22,7 +22,7 @@
    
    (rnrs syntax-case (6))
    
-   (only (racket) print-mpair-curly-braces)
+   (only (racket) print-mpair-curly-braces print-as-expression)
    
    (only (rnrs control (6)) when)
    
@@ -30,11 +30,16 @@
 
 
    (Scheme+R6RS)
+
+   ;;(Scheme+R6RS def-nfx)
+
+   ;;(Scheme+R6RS n-arity)
   
    ) ; end import
 
-
-  ;; display { } as they are.
+  (print-as-expression #f) ; print (a b) instead of (mcons a (mcons b '()))
+  
+  ;; display mutable list { } with classic ( ).
   (print-mpair-curly-braces #f)
 
   ;; example:

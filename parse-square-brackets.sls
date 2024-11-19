@@ -22,7 +22,6 @@
 
 ;; was optimise-infix-slice.scm
 
-;; /Applications/Racket\ v8.13/bin/plt-r6rs --install --force parse-square-brackets.scm
 
 #!r6rs
 
@@ -156,13 +155,8 @@
 
 					    
 
-;; DEPRECATED
-;; (define (parse-square-brackets-arguments-evaluator args-brackets)
-;;   ;;(display "parse-square-brackets-arguments-evaluator : args-brackets=") (display args-brackets) (newline)
-;;   (parse-square-brackets-arguments args-brackets
-;; 					     (lambda (op a b) (op a b))
-;; 					     (get-operator-precedence)))
 
-'() ;; why this? statement required
+
+'() ;; why this? statement required in R6RS?
 
 ) ; end module

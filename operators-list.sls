@@ -16,8 +16,6 @@
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-;; /Applications/Racket\ v8.13/bin/plt-r6rs --install operators-list.scm
-
 
 #!r6rs
   
@@ -25,11 +23,13 @@
 
   (export definition-operator
 	  assignment-operator
+	  exponential-operator
 	  
 	  infix-operators-lst-for-parser
 	  
 	  definition-operator-syntax
 	  assignment-operator-syntax
+	  exponential-operator-syntax
 	  
 	  infix-operators-lst-for-parser-syntax
 	  get-infix-operators-lst-for-parser-syntax ; for Kawa
@@ -42,7 +42,7 @@
    (only (racket) syntax))
 
 
-(define definition-operator (list '<+ ;'+>
+(define definition-operator (list '<+ ;'+> ; commented because lexically forbidden in R6RS
 				  '⥆ '⥅
 				  ':+ ;'+:
 				  ))
@@ -53,12 +53,15 @@
 				  '<v 'v>
 				  '⇜ '⇝))
 
+(define exponential-operator (list 'expt '**))
+
 
 (define infix-operators-lst-for-parser
 
   (list
     
-   (list 'expt '**)
+   exponential-operator
+   
    (list '* '/ '%)
  
    (list '+ '-)
@@ -97,11 +100,13 @@
 					 #'⇜ #'⇝))
 
 
+(define exponential-operator-syntax (list #'expt #'**))
+
 
 (define infix-operators-lst-for-parser-syntax
 
   (list
-    (list #'expt #'**)
+    exponential-operator-syntax
     (list #'* #'/ #'%)
     (list #'+ #'-)
 	
