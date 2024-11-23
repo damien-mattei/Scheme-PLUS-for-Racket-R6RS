@@ -86,6 +86,7 @@
 	    ;; x
 	    ;; 6
 
+	    ;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	    ;; (define a  (cdr (cons + 1)) + 2)
 	    ;; exception raised by error display handler: srcloc: contract violation
 	    ;;   expected: (or/c exact-positive-integer? #f)
@@ -97,6 +98,11 @@
 	    ;;  (define a  (+ (cdr (cons + 1)) 2))
 	    ;; a
 	    ;; 3
+
+	    ;; !!!!!!!!!!!!!!!!!!!
+	    ;; (define y sin 0.34)
+	    ;; y
+	    ;; 0.3334870921408144
 	    
 	    ;; at least 2 arguments
 	    ((define name   arg1 arg2 arg3 ...)

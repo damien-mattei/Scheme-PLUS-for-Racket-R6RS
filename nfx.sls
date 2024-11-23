@@ -38,8 +38,8 @@
 	  
 	  (for (only (rnrs io simple (6)) display newline) expand)
 	  (for (only (rnrs control (6)) when) expand)
-	  ;; (for (only (racket) syntax->list) expand)
-	  ;; (for (compatibility mlist) expand)
+	  (for (only (racket) syntax->list) expand)
+	  (for (compatibility mlist) expand)
 	  ;; (for (only (racket) print-mpair-curly-braces print-as-expression) expand)
 	  ;; (only (racket) print-mpair-curly-braces print-as-expression)
 	  )
@@ -60,7 +60,7 @@
     
     (syntax-case stx ()
 
-      (($nfx$ expr) ;;#'expr)
+      (($nfx$ expr)
 
        (with-syntax
 			 
@@ -73,32 +73,52 @@
 	       ;; ;; display mutable list { } with classic ( ).
 	       ;; (print-mpair-curly-braces #f)
 	       
-	       ;;(display "$nfx$: #'(expr)=") (display #'(expr)) (newline)
 	       (display "$nfx$: #'(expr)=") (display #'(expr)) (newline)
-	       
-	       ;; (car ;  probably because the result will be encapsuled in a list !
-	       ;; 	;; apply operator precedence rules
-	       ;; 	(!*prec-generic ;; (list->mlist
-	       ;; 	 ;;  (syntax->list ;; no need in R6RS ???
-	       ;; 	 ;; give this sort of errors (perheaps because in with-syntax):
-	       ;; 	 ;;  ../nfx.sls:101:47: syntax->list: contract violation
-	       ;; 	 ;; expected: syntax?
-	       ;; 	 ;; given: (mcons #<syntax 3> (mcons #<syntax *> (mcons #<syntax (5 - 2)> (mcons #<syntax +> (mcons #<syntax 1> '())))))
-	       ;; 	 #'(expr);))
-	       ;; 	 infix-operators-lst-for-parser-syntax
-	       ;; 	 (lambda (op a b) (list op a b))))
-	       
-	       (recall-infix-parser #'expr
-				    infix-operators-lst-for-parser-syntax
-				    (lambda (op a b) (list op a b)))
+
+	     
+	       (car ;  probably because the result will be encapsuled in a list !
+		;; apply operator precedence rules
+		(!*prec-generic-infix-parser
+		 ;; (list->mlist
+		 ;;  (syntax->list ;; no need in R6RS ???
+		   ;;#'(expr) )) ; do not work
+		   (list #'expr););)
+		   infix-operators-lst-for-parser-syntax
+		   (lambda (op a b) (list op a b))) )
+
+	       ;; works
+	       ;; (recall-infix-parser #'expr
+	       ;; 			    infix-operators-lst-for-parser-syntax
+	       ;; 			    (lambda (op a b) (list op a b)))
 	       )))
 	 
 	 #'parsed-args))
       
 
 	 
-	    
-      (($nfx$ op1 e1) #'(op1 e1))
+
+      ;; !!!!!!!!!!!!!!!!!!!
+      ;; (define y sin 0.34)
+      ;; y
+      ;; 0.3334870921408144
+      ;; (define x  - 4)
+      ;; x
+      ;; -4
+      (($nfx$ op1 e1) ; note : with 2 arg !*-prec-generic-infix-parser could not work , so we use recall-infix-parser
+
+       (with-syntax
+			 
+	   ((parsed-args
+	     
+	     (recall-infix-parser #'(op1 e1)
+				  infix-operators-lst-for-parser-syntax
+				  (lambda (op a b) (list op a b)))
+
+	     ))
+	 
+	 #'parsed-args))	   
+
+      
       
       ;; (($nfx$ e1 op1 e2) #'(op1 e1 e2))
       ;; (($nfx$ e1 op1 e2 op2)
@@ -121,8 +141,8 @@
 		 ;;(display "$nfx$: (syntax->list #'(e1 op1 e2 op ...))=") (display (syntax->list #'(e1 op1 e2 op ...))) (newline)
 
 		 (let ((expr (car ;  probably because the result will be encapsuled in a list !
-			      ;;(!*prec-generic (syntax->list #'(e1 op1 e2 op2 e3 op ...)) ; apply operator precedence rules
-			      (!*prec-generic ;;(list->mlist
+			      ;;(!*prec-generic-infix-parser (syntax->list #'(e1 op1 e2 op2 e3 op ...)) ; apply operator precedence rules
+			      (!*prec-generic-infix-parser ;;(list->mlist
 			                        ;;(syntax->list ;; no need in R6RS ???
 			                        ;; give this sort of errors (perheaps because in with-syntax):
 			                        ;;  ../nfx.sls:101:47: syntax->list: contract violation
@@ -157,3 +177,23 @@
   
 ) ; end library
 
+
+
+;; (define (foo) 7)
+
+;; (foo)
+;; 7
+
+;; (define x  - (foo))
+
+;; x
+;; -7
+
+;; (define (bar) -)
+
+;; (bar)
+;; #<procedure:->
+
+;; (define z  (bar) (foo))
+;; z
+;; -7

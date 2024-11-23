@@ -26,7 +26,7 @@
 
 (library (infix-with-precedence-to-prefix) ; R6RS
 
-  (export !*prec-generic
+  (export !*prec-generic-infix-parser
 	  recall-infix-parser)
 
   (import (rnrs base (6))
@@ -47,7 +47,7 @@
 
 
 ;; evaluate one group of operators in the list of terms
-(define (!**-generic terms stack operators #;odd? creator)
+(define (!**-generic-infix-parser terms stack operators #;odd? creator)
 
   ;; (display "!** : terms = ") (display terms) (newline)
   ;; (display "!** : operators = ") (display operators) (newline)
@@ -62,41 +62,41 @@
 
 
   ;; inner definition ,odd? is variable like a parameter
-  (define (calc-generic op a b)
+  (define (calc-generic-infix-parser op a b)
     ;;(if odd? (list op a b) (list op b a)))
     
     (define rv ;;(if odd?
 		   (creator op a b))
 		   ;;(creator op b a))) ; at the beginning odd? is #f
-    ;; (display "calc-generic : rv =") (display rv) (newline)
+    ;; (display "calc-generic-infix-parser : rv =") (display rv) (newline)
     rv)
   
 
   ;; executed body of procedure start here
   
-  (cond ((and (null? terms)
-	      (not (memq 'expt operators))
+  (cond ((and (null? terms)  ; finish
+	      (not (memq 'expt operators))  ; should we reverse ?  for not exponential case ? (can not remember exactly what i coded here)
 	      (not (member-syntax #'expt operators)))
 
-	  ;; (display "!**-generic cond case 1 : stack =")
+	  ;; (display "!**-generic-infix-parser cond case 1 : stack =")
 	  ;; (display stack)
 	  ;; (newline)
-	  ;; (display "!**-generic : terms =")
+	  ;; (display "!**-generic-infix-parser : terms =")
 	  ;; (display terms)
 	  ;; (newline)
 	  (let ((rs (reverse stack))) ; base case, stack is the result, we return the reverse because
 					; scheme's list-iteration is forwards-only and
 					; list-construction is prepend-only
-	    ;; (display "!**-generic : rs =")
+	    ;; (display "!**-generic-infix-parser : rs =")
 	    ;; (display rs)
 	    ;; (newline)
 	    rs))
 
-	((null? terms)
-	 ;; (display "!**-generic cond case 2 : stack =")
+	((null? terms) ; finish 
+	 ;; (display "!**-generic-infix-parser cond case 2 : stack =")
 	 ;; (display stack)
 	 ;; (newline)
-	 ;; (display "!**-generic : terms =")
+	 ;; (display "!**-generic-infix-parser : terms =")
 	 ;; (display terms)
 	 ;; (newline)
 	 stack) ; here we get 'expt (see previous test) then we do not reverse because we
@@ -117,7 +117,7 @@
 	      ;; test the finding of operator in precedence list
 	      (or
 	       (memq (car stack) operators) ; find an operator of the same precedence
-	       (member-syntax (car stack) operators)))	 ;  syntaxified !
+	       (member-syntax (car stack) operators)))	 ;  syntaxified version!
 
 	 
 	 ;; body if condition is true : ; found an operator of the same precedence
@@ -128,12 +128,12 @@
 			    ;;(display "checking exponential for calculus...")(newline)
 			    (if (or (memq 'expt operators) ; testing for exponential (expt or **)
 				    (member-syntax #'expt operators))
-			      (calc-generic op b a) ; op equal expt or **
-			      (calc-generic op a b)))))
+			      (calc-generic-infix-parser op b a) ; op equal expt or **
+			      (calc-generic-infix-parser op a b)))))
 	   
 	   ;;(display "op=") (display op) (newline)
 	   
-	   (!**-generic (cdr terms) ; forward in terms
+	   (!**-generic-infix-parser (cdr terms) ; forward in terms
 			(cons calculus ; put the result in prefix notation on the stack
 			      (cddr stack)) 
 			operators
@@ -145,7 +145,7 @@
 	;; otherwise just keep building the stack, push at minima : a op from a op b  
 	(else
        
-	 (!**-generic (cdr terms) ;  forward in expression
+	 (!**-generic-infix-parser (cdr terms) ;  forward in expression
 		      (cons (car terms) stack) ; push first sub expression on stack
 		      operators ; always the same operator group
 		      ;;odd?;(not odd?)
@@ -155,26 +155,26 @@
 ;; deal with simple infix with same operator n-arity
 ;; check we really have infix expression before
 ;; wrap a null test
-(define (pre-check-!*-generic terms operator-precedence creator)
+(define (pre-check-!*-generic-infix-parser terms operator-precedence creator)
 
   ;; pre-check we have an infix expression because parser can not do it
   (when (not (infix? terms operators-lst-syntax))
- 	(error "pre-check-!*-generic  : arguments do not form an infix expression :terms:"
+ 	(error "pre-check-!*-generic-infix-parser  : arguments do not form an infix expression :terms:"
 	       terms))
   
 
-  (if (null? terms) ;; never for infix as there is e1 op1 e2 op2 e3 at least
+  (if (null? terms) ;; should be never for infix as there is e1 op1 e2 op2 e3 at least 
 	terms
-	(!*-generic (reverse terms) ; start reversed for exponentiation (highest precedence operator)
+	(!*-generic-infix-parser (reverse terms) ; start reversed for exponentiation (highest precedence operator)
 		    operator-precedence
 		    creator)))
 
 
 
 ;; evaluate a list of groups of operators in the list of terms - forward in operator groups
-(define (!*-generic terms operator-groups #;odd? creator)
-  ;; (display "!*-generic : terms = ") (display terms) (newline)
-  ;; (display "!*-generic : operator-groups = ") (display operator-groups) (newline) (newline)
+(define (!*-generic-infix-parser terms operator-groups #;odd? creator)
+  ;; (display "!*-generic-infix-parser : terms = ") (display terms) (newline)
+  ;; (display "!*-generic-infix-parser : operator-groups = ") (display operator-groups) (newline) (newline)
   (if (or (null? operator-groups) ; done evaluating all operators
 	  (null? (cdr terms)))    ; only one term left
       terms ; finished processing operator groups
@@ -183,18 +183,22 @@
       ;; operator precedence
 
       ;; recursive tail call
-      (let ((rv-tms (!**-generic terms '() (car operator-groups) #;odd? creator) ))
-	;; (display "!*-generic : rv-tms =")
+      (let ((rv-tms (!**-generic-infix-parser terms '() (car operator-groups) #;odd? creator) ))
+	;; (display "!*-generic-infix-parser : rv-tms =")
 	;; (display rv-tms)
 	;; (newline)
 	
-      (!*-generic rv-tms; this forward in terms 
+      (!*-generic-infix-parser rv-tms; this forward in terms 
 		  (cdr operator-groups) ;  rest of precedence list , this forward in operator groups of precedence ,check another group
 		  ;;(not odd?)
 		  creator))))
 
 
-;; TODO : melt the 2 versions
+
+
+
+
+;; recall infix parser (generally used in a map on arguments)
 (define (recall-infix-parser expr operator-precedence creator)
 
     (define expr-inter #f) ; intermediate variable
@@ -220,7 +224,7 @@
 	   expr)
 
 	  ((null? (cdr expr))
-	   expr)
+	   expr) ; why not recurse deep on expr? as it could be infix too !
 
 	  ;; could have be replaced by next case (prefix? ...)
 	  ((datum=? '$nfx$ (car expr)) ; test {e1 op1 e2 ...}
@@ -232,23 +236,133 @@
 		      (cdr expr))))
 	   ;;expr)
 
-	  (else
+	  (else ; infix expression (if not prefix or something else before)
 	   ;;(define expr-d
 	     (car ;  probably because the result will be encapsuled in a list !
-	      (!*prec-generic expr operator-precedence creator))) ; recursive call to the caller
+	      (!*prec-generic-infix-parser expr operator-precedence creator))) ; recursive call to the caller
 	  ;;(display "expr-d=")(display expr-d)(newline)
 	  ;;expr-d)
 	  ))
 
 
 
+(define (display-object L)
+  (cond ((null? L)
+	 (display L) (newline))
+	(else
+	 (display "L=") (display L) (newline)
+	 (display (car L)) (newline)
+	 (display-object (cdr L)))))
+
 
 
 
 ;; this is generally the main entry routine
-(define (!*prec-generic terms  operator-precedence creator)   ;; precursor of !*-generic
+(define (!*prec-generic-infix-parser terms  operator-precedence creator)   ;; precursor of !*-generic-infix-parser
 
   
+
+  (define terms-inter #f) ; intermediate variable
+  (define terms-local terms)
+
+ 
+  
+  (define deep-terms
+
+    (begin
+
+      ;; code moved here because in R6RS define: not allowed in an expression context 
+      
+      (display "!*prec-generic-infix-parser : deep-terms : terms=") (display terms) (newline)
+      ;;(display "!*prec-generic-infix-parser : operator-precedence=") (display operator-precedence) (newline)
+      
+      (when (not (list? terms))
+	(display "!*prec-generic-infix-parser : deep-terms : WARNING , terms is not a list, perheaps expander is not psyntax (Portable Syntax)") (newline)
+	(display "!*prec-generic-infix-parser : deep-terms : terms=") (display terms) (newline))
+    
+
+      (when (syntax? terms)
+	(display "deep-terms : detected syntax,passing from syntax to list (will be used if it is a list)") (newline)
+	(set! terms-inter (syntax->list terms))
+	(when terms-inter
+	  (display "deep-terms : got a list") (newline)
+	  (set! terms-local (list->mlist terms-inter))))
+
+      (display "!*prec-generic-infix-parser : deep-terms : terms-local=") (display terms-local) (newline)
+      ;;(display-object terms-local)
+      
+      (let ((rv (map (lambda (x) (recall-infix-parser x operator-precedence creator)) ;; recall-infix-parser
+		     terms-local)))
+	;;(display "!*prec-generic-infix-parser : deep-terms : (list? rv) =") (display (list? rv)) (newline)
+	rv)))
+
+
+  
+  ; Return alternating parameters in a lyst (1st, 3rd, 5th, etc.)
+  (define (alternating-parameters lyst)
+    (if (or (null? lyst) (null? (cdr lyst)))
+      lyst
+      (cons (car lyst) (alternating-parameters (cddr lyst)))))
+
+
+
+
+  ;; this is the returned value
+  (define rv
+
+    (begin
+      (display "!*prec-generic-infix-parser rv : deep-terms:") (display deep-terms) (newline)
+      ;; test for simple-infix (no operator precedence)
+      (if (simple-infix-list-syntax? deep-terms)
+	  (begin
+	    ;;(display "!*prec-generic-infix-parser : deep-terms is a simple infix list") (newline)
+	    ;;(display "!*prec-generic-infix-parser : deep-terms=") (display deep-terms) (newline)
+	    (list
+	     (cons (cadr deep-terms) (alternating-parameters deep-terms)))) ; we put it in a list because nfx take the car...
+
+	  (begin
+	    ;;(display "!*prec-generic-infix-parser : deep-terms is not a simple infix list") (newline)
+            (pre-check-!*-generic-infix-parser  deep-terms ;terms
+				   operator-precedence
+				   creator)))))
+
+  ;;(display "!*prec-generic-infix-parser : rv=") (display rv) (newline)
+
+  ;;(newline)
+  
+  rv)
+
+
+
+
+) ; end module
+
+
+
+;; Welcome to DrRacket, version 8.13 [cs].
+;; Language: r6rs, with debugging; memory limit: 8192 MB.
+;; > (!*prec-generic-infix-parser '(x <- 10.0 - 3.0 - 4.0 + 1 - 5.0 * 2.0 ** 3.0 / 7.0 ** 3.0)   infix-operators-lst-for-parser (lambda (op a b) (list op a b)))
+;; ((<- x (- (+ (- (- 10.0 3.0) 4.0) 1) (/ (* 5.0 (** 2.0 3.0)) (** 7.0 3.0)))))
+;; > (- (+ (- (- 10.0 3.0) 4.0) 1) (/ (* 5.0 (** 2.0 3.0)) (** 7.0 3.0)))
+;; > (define ** expt)
+;; > (- (+ (- (- 10.0 3.0) 4.0) 1) (/ (* 5.0 (** 2.0 3.0)) (** 7.0 3.0)))
+;; 3.883381924198251
+
+;; Python:
+;; 10.0 - 3.0 - 4.0 + 1 - 5.0 * 2.0 ** 3.0 / 7.0 ** 3.0
+;; 3.883381924198251
+
+
+;; > (!*prec-generic-infix-parser '(a ** b ** c)  infix-operators-lst-for-parser (lambda (op a b) (list op a b)))
+;; ((** a (** b c)))
+
+;; >  (!*prec-generic-infix-parser '(a - b - c) infix-operators-lst-for-parser (lambda (op a b) (list op a b)))
+;; ((- (- a b) c))
+
+
+
+
+
 
 ;; > {(3 + 1) * (2 * (2 + 1) - 1) + (2 * 5 - 5)}
 
@@ -273,7 +387,7 @@
 
 ;; > x
 ;; x
-  ;; 3
+;; 3
 
 
 ;;   > {(3 * 5 + {2 * (sin .5)}) - 4 * 5}
@@ -338,100 +452,8 @@
   ;; 	  (else
   ;; 	   ;;(define expr-d
   ;; 	     (car ;  probably because the result will be encapsuled in a list !
-  ;; 	      (!*prec-generic expr operator-precedence creator))) ; recursive call to the caller
+  ;; 	      (!*prec-generic-infix-parser expr operator-precedence creator))) ; recursive call to the caller
   ;; 	  ;;(display "expr-d=")(display expr-d)(newline)
   ;; 	  ;;expr-d)
   ;; 	  ))
   
-
-  (define terms-inter #f) ; intermediate variable
-  (define terms-local terms)
-  
-  (define deep-terms
-
-    (begin
-
-      ;; code moved here because in R6RS define: not allowed in an expression context 
-      
-      (display "!*prec-generic : deep-terms : terms=") (display terms) (newline)
-      ;;(display "!*prec-generic : operator-precedence=") (display operator-precedence) (newline)
-      
-      (when (not (list? terms))
-	(display "!*prec-generic : deep-terms : WARNING , terms is not a list, perheaps expander is not psyntax (Portable Syntax)") (newline)
-	(display "!*prec-generic : deep-terms : terms=") (display terms) (newline))
-    
-
-      (when (syntax? terms)
-	(display "deep-terms : detected syntax,passing from syntax to list (will be used if it is a list)") (newline)
-	(set! terms-inter (syntax->list terms))
-	(when terms-inter
-	  (display "deep-terms : got a list") (newline)
-	  (set! terms-local (list->mlist terms-inter))))
-
-      (let ((rv (map (lambda (x) (recall-infix-parser x operator-precedence creator)) ;; recall-infix-parser
-		     terms-local)))
-	;;(display "!*prec-generic : deep-terms : (list? rv) =") (display (list? rv)) (newline)
-	rv)))
-
-
-  
-  ; Return alternating parameters in a lyst (1st, 3rd, 5th, etc.)
-  (define (alternating-parameters lyst)
-    (if (or (null? lyst) (null? (cdr lyst)))
-      lyst
-      (cons (car lyst) (alternating-parameters (cddr lyst)))))
-
-
-
-
-  ;; this is the returned value
-  (define rv
-
-    (begin
-      ;;(display "!*prec-generic rv : deep-terms:") (display deep-terms) (newline)
-      ;; test for simple-infix (no operator precedence)
-      (if (simple-infix-list-syntax? deep-terms)
-	  (begin
-	    ;;(display "!*prec-generic : deep-terms is a simple infix list") (newline)
-	    ;;(display "!*prec-generic : deep-terms=") (display deep-terms) (newline)
-	    (list
-	     (cons (cadr deep-terms) (alternating-parameters deep-terms)))) ; we put it in a list because nfx take the car...
-
-	  (begin
-	    ;;(display "!*prec-generic : deep-terms is not a simple infix list") (newline)
-            (pre-check-!*-generic  deep-terms ;terms
-				   operator-precedence
-				   creator)))))
-
-  ;;(display "!*prec-generic : rv=") (display rv) (newline)
-
-  ;;(newline)
-  
-  rv)
-
-
-
-
-) ; end module
-
-
-
-;; Welcome to DrRacket, version 8.13 [cs].
-;; Language: r6rs, with debugging; memory limit: 8192 MB.
-;; > (!*prec-generic '(x <- 10.0 - 3.0 - 4.0 + 1 - 5.0 * 2.0 ** 3.0 / 7.0 ** 3.0)   infix-operators-lst-for-parser (lambda (op a b) (list op a b)))
-;; ((<- x (- (+ (- (- 10.0 3.0) 4.0) 1) (/ (* 5.0 (** 2.0 3.0)) (** 7.0 3.0)))))
-;; > (- (+ (- (- 10.0 3.0) 4.0) 1) (/ (* 5.0 (** 2.0 3.0)) (** 7.0 3.0)))
-;; > (define ** expt)
-;; > (- (+ (- (- 10.0 3.0) 4.0) 1) (/ (* 5.0 (** 2.0 3.0)) (** 7.0 3.0)))
-;; 3.883381924198251
-
-;; Python:
-;; 10.0 - 3.0 - 4.0 + 1 - 5.0 * 2.0 ** 3.0 / 7.0 ** 3.0
-;; 3.883381924198251
-
-
-;; > (!*prec-generic '(a ** b ** c)  infix-operators-lst-for-parser (lambda (op a b) (list op a b)))
-;; ((** a (** b c)))
-
-;; >  (!*prec-generic '(a - b - c) infix-operators-lst-for-parser (lambda (op a b) (list op a b)))
-;; ((- (- a b) c))

@@ -115,9 +115,9 @@
   
   (define (chaos p q d x0 y0)
     
-    (define a   2 * (cos (2 * pi * p / q)));; 2 * (cos {2 * pi * p / q})) ; {2 * cos{2 * pi * p / q}}) ; or {2 * (cos {2 * pi * p / q})} or {2 * cos({2 * pi * p / q})}
-    (define-infix ksx  (sqrt ((2 + a) / 2))) ;;(sqrt {(2 + a) / 2})) ; (define ksx (sqrt {{2 + a} / 2})) ; or sqrt{{2 + a} / 2}
-    {ksy := (sqrt ((2 - a) / 2))} ; {ksy := (sqrt {(2 - a) / 2})} ;{ksy := (sqrt {{2 - a} / 2})} ; or (define ksy (sqrt {{2 - a} / 2}))
+    (define a   2 * (cos (2 * pi * p / q))) ; 2 * (cos {2 * pi * p / q})) ; {2 * cos{2 * pi * p / q}}) ;  {2 * (cos {2 * pi * p / q})} ; {2 * cos({2 * pi * p / q})}
+    (define-infix ksx  (sqrt ((2 + a) / 2))) ; (sqrt {(2 + a) / 2})) ; (define ksx (sqrt {{2 + a} / 2})) ;  sqrt{{2 + a} / 2}
+    {ksy := (sqrt ((2 - a) / 2))} ; {ksy := (sqrt {(2 - a) / 2})} ; {ksy := (sqrt {{2 - a} / 2})} ; or (define ksy (sqrt {{2 - a} / 2}))
     
     (stream-map (lambda (z)
                   (match-let (((vector x y) z))

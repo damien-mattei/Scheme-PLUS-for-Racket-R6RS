@@ -72,7 +72,7 @@
   (define rv
     (cond ((not (list? expr)) (not (member-syntax expr oper-lst))) ; ex: 3 , not an operator ! 
 	  ((null? expr) #t) ; definition
-	  ((null? (cdr expr)) #f) ; (a) not allowed as infix
+	  ((null? (cdr expr)) #t) ;#f) ; (a)  allowed or not as infix
 	  (else
 	   (and (not (member-syntax (car expr) oper-lst)) ; not start with an operator !
 		(infix-rec? (cdr expr)))))) ; sublist : (op arg ...) match infix-rec
