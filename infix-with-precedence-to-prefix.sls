@@ -323,8 +323,8 @@
 	  (begin
 	    ;;(display "!*prec-generic-infix-parser : deep-terms is not a simple infix list") (newline)
             (pre-check-!*-generic-infix-parser  deep-terms ;terms
-				   operator-precedence
-				   creator)))))
+						operator-precedence
+						creator)))))
 
   ;;(display "!*prec-generic-infix-parser : rv=") (display rv) (newline)
 
