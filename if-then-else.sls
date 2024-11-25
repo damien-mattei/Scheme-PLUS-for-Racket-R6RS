@@ -66,7 +66,7 @@
 	      
 		      (call-parse-if-args-syntax #'(tst ...))))
 
-		    (display "if : parsed-args=") (display #'parsed-args) (newline)
+		    ;;(display "if : parsed-args=") (display #'parsed-args) (newline)
        		    #'parsed-args)))))
 		    
 

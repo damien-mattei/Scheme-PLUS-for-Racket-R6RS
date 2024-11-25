@@ -230,7 +230,7 @@
 	 ;; display { } as they are.
 	 (print-mpair-curly-braces #f)
 
-	 (display "<- : #'(index ...) = ") (display #'(index ...)) (newline)
+	 ;;(display "<- : #'(index ...) = ") (display #'(index ...)) (newline)
 
 	 ;; we parse arguments at posteriori of SRFI 105 parser
 	 (with-syntax
@@ -244,10 +244,10 @@
 
 			    ) ; end definitions
 			   
-	   (display "<- : #'parsed-args=") (display #'parsed-args) (newline)
-	   (display "<- : (list? #'parsed-args)=") (display (list? #'parsed-args)) (newline)
-	   (display "<- : (mlist? #'parsed-args)=") (display (mlist? #'parsed-args)) (newline)
-	   (display "<- : (length #'parsed-args)=") (display (length #'parsed-args)) (newline)
+	   ;; (display "<- : #'parsed-args=") (display #'parsed-args) (newline)
+	   ;; (display "<- : (list? #'parsed-args)=") (display (list? #'parsed-args)) (newline)
+	   ;; (display "<- : (mlist? #'parsed-args)=") (display (mlist? #'parsed-args)) (newline)
+	   ;; (display "<- : (length #'parsed-args)=") (display (length #'parsed-args)) (newline)
 
 	   #'(assignment-next4list-args container parsed-args expr)))
 

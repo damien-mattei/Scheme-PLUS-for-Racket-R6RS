@@ -203,13 +203,13 @@
 
     (define expr-inter #f) ; intermediate variable
 
-    (display "recall-infix-parser : expr =") (display expr) (newline)
+    ;;(display "recall-infix-parser : expr =") (display expr) (newline)
 
     (when (syntax? expr)
-      (display "recall-infix-parser : detected syntax,passing from syntax to list (will be used if it is a list)") (newline)
+      ;;(display "recall-infix-parser : detected syntax,passing from syntax to list (will be used if it is a list)") (newline)
       (set! expr-inter (syntax->list expr))
       (when expr-inter
-	(display "recall-infix-parser : got a list") (newline)
+	;;(display "recall-infix-parser : got a list") (newline)
 	(set! expr (list->mlist expr-inter))))
     
     ;;(display "recall-infix-parser : expr= ") (display expr) (newline)
@@ -217,7 +217,7 @@
 
 
     (cond ((not (list? expr)) ; atom
-	   (display "recall-infix-parser : expr not list.") (newline)
+	   ;;(display "recall-infix-parser : expr not list.") (newline)
 	   expr)
 	  
 	  ((null? expr)
@@ -273,7 +273,7 @@
 
       ;; code moved here because in R6RS define: not allowed in an expression context 
       
-      (display "!*prec-generic-infix-parser : deep-terms : terms=") (display terms) (newline)
+      ;;(display "!*prec-generic-infix-parser : deep-terms : terms=") (display terms) (newline)
       ;;(display "!*prec-generic-infix-parser : operator-precedence=") (display operator-precedence) (newline)
       
       (when (not (list? terms))
@@ -282,13 +282,13 @@
     
 
       (when (syntax? terms)
-	(display "deep-terms : detected syntax,passing from syntax to list (will be used if it is a list)") (newline)
+	;;(display "deep-terms : detected syntax,passing from syntax to list (will be used if it is a list)") (newline)
 	(set! terms-inter (syntax->list terms))
 	(when terms-inter
-	  (display "deep-terms : got a list") (newline)
+	  ;;(display "deep-terms : got a list") (newline)
 	  (set! terms-local (list->mlist terms-inter))))
 
-      (display "!*prec-generic-infix-parser : deep-terms : terms-local=") (display terms-local) (newline)
+      ;;(display "!*prec-generic-infix-parser : deep-terms : terms-local=") (display terms-local) (newline)
       ;;(display-object terms-local)
       
       (let ((rv (map (lambda (x) (recall-infix-parser x operator-precedence creator)) ;; recall-infix-parser
@@ -311,7 +311,7 @@
   (define rv
 
     (begin
-      (display "!*prec-generic-infix-parser rv : deep-terms:") (display deep-terms) (newline)
+      ;;(display "!*prec-generic-infix-parser rv : deep-terms:") (display deep-terms) (newline)
       ;; test for simple-infix (no operator precedence)
       (if (simple-infix-list-syntax? deep-terms)
 	  (begin

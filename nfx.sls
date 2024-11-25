@@ -72,8 +72,9 @@
   
 	       ;; ;; display mutable list { } with classic ( ).
 	       ;; (print-mpair-curly-braces #f)
-	       
-	       (display "$nfx$: #'(expr)=") (display #'(expr)) (newline)
+
+	     
+		 ;;(display "$nfx$: #'(expr)=") (display #'(expr)) (newline)
 
 	     
 	       (car ;  probably because the result will be encapsuled in a list !
@@ -137,8 +138,10 @@
 
 	       (begin
 
-		 (display "$nfx$: #'(e1 op1 e2 op ...)=") (display #'(e1 op1 e2 op ...)) (newline)
-		 ;;(display "$nfx$: (syntax->list #'(e1 op1 e2 op ...))=") (display (syntax->list #'(e1 op1 e2 op ...))) (newline)
+		 
+		   ;;(display "$nfx$: #'(e1 op1 e2 op ...)=") (display #'(e1 op1 e2 op ...)) (newline)
+		   ;;(display "$nfx$: (syntax->list #'(e1 op1 e2 op ...))=") (display (syntax->list #'(e1 op1 e2 op ...))) (newline)
+		   
 
 		 (let ((expr (car ;  probably because the result will be encapsuled in a list !
 			      ;;(!*prec-generic-infix-parser (syntax->list #'(e1 op1 e2 op2 e3 op ...)) ; apply operator precedence rules
@@ -164,8 +167,9 @@
 			  ;; transform in : '(<- x y z t u (+ (* 3 4) 1))
 			  expr) ;) ; end begin
 		       expr)))))
-	      
-	   (display "$nfx$ : parsed-args=") (display #'parsed-args) (newline)
+
+	  
+	     ;;(display "$nfx$ : parsed-args=") (display #'parsed-args) (newline)
 	   #'parsed-args)))))
 
 
