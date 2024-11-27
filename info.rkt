@@ -5,7 +5,7 @@
 (define compile-omit-paths '("deprecated" "compiled" "src" "examples"))
 (define test-omit-paths '("deprecated" "compiled" "src" "examples"))
 (define pkg-desc "Scheme+ for Racket R6RS")
-(define version "9.5")
+(define version "9.7")
 (define pkg-authors '(mattei))
 (define scribblings '(("scribblings/Scheme-PLUS-for-Racket-R6RS.scrbl" ())))
 (define build-deps '("scribble-lib" "racket-doc" "scribble-doc"))
