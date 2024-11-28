@@ -63,6 +63,10 @@
    exponential-operator
    
    (list '* '/ '%)
+
+   (list '·) ; symbolic logic And
+
+   (list '⊕) ; symbolic logic Xor
  
    (list '+ '-)
    
@@ -108,6 +112,8 @@
   (list
     exponential-operator-syntax
     (list #'* #'/ #'%)
+    (list #'·) ; symbolic logic And
+    (list #'⊕) ; symbolic logic Xor
     (list #'+ #'-)
 	
     (list #'<< #'>>)

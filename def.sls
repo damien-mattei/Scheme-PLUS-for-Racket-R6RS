@@ -99,8 +99,8 @@
          (with-syntax ((ret-id (datum->syntax stx 'return))
 		       (ret-rec-id (datum->syntax stx 'return-rec)))
 
-		      (display "def.scm : def : ret-id = ") (display #'ret-id) (newline)
-		      (display "def.scm : def : ret-rec-id = ") (display #'ret-rec-id) (newline)
+		      ;;(display "def.scm : def : ret-id = ") (display #'ret-id) (newline)
+		      ;;(display "def.scm : def : ret-rec-id = ") (display #'ret-rec-id) (newline)
 
 		      #'(define (<name> <arg> ...)
 
